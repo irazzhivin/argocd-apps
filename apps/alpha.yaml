@@ -9,7 +9,7 @@ spec:
   destination:
     namespace: app-1
     server: https://kubernetes.default.svc
-  project: production
+  project: default
   source:
     helm:
       parameters:
@@ -23,7 +23,7 @@ spec:
       - values.yaml
     path: helm
     repoURL: https://github.com/irazzhivin/helm-chart-demo-app
-    targetRevision: stable
+    targetRevision: main
   syncPolicy:
     automated:
       selfHeal: true
