@@ -22,7 +22,7 @@ spec:
       valueFiles:
       - values.yaml
     path: helm
-    repoURL: https://github.com/irazzhivin/helm-chart-demo-app
+    repoURL: https://github.com/irazzhivin/argocd-apps/
     targetRevision: main
   syncPolicy:
     automated:
