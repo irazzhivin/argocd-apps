@@ -1,0 +1,15 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: {{ .Values.fruit }}-app
+  labels:
+    app: {{ .Values.fruit }}
+spec:
+  containers:
+    - name: {{ .Values.fruit }}-app
+      image: hashicorp/http-echo
+      args:
+        - "-text={{ .Values.fruit }}"
+
+
+
