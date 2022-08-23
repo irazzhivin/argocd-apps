@@ -192,3 +192,5 @@ module "iam_assumable_role_crossplane" {
 # curl https://a0468b226803f44b3914acc62dc1e319-d9f9fdd0b6aefaa3.elb.eu-central-1.amazonaws.com/banana
 # kubectl port-forward svc/argocd-server -n argocd 8080:443
 # kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+#kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=idrazzhivin --docker-password=AAA777AAA --docker-email=idrazzhivin@icloud.com
