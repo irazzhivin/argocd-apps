@@ -12,10 +12,9 @@ spec:
   project: default
   source:
     helm:
-      values:
-        provider:
-          packages:
-            - provider-aws
+      parameters:
+      - name: provider.packages
+        value: [provider-aws]
       valueFiles:
       - values.yaml
     chart: crossplane
