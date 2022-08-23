@@ -13,7 +13,7 @@ spec:
   source:
     helm:
       parameters:
-      - name: fruit
+      - name: text
         value: apple
       valueFiles:
       - values.yaml

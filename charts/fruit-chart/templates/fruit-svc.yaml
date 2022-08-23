@@ -2,9 +2,9 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Values.fruit }}-service
+  name: {{ .Release.Namespace }}-service
 spec:
   selector:
-    app: {{ .Values.fruit }}
+    app: {{ .Release.Namespace }}
   ports:
     - port: 5678

@@ -1,12 +1,12 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: {{ .Values.fruit }}-app
+  name: {{ .Release.Namespace }}-app
   labels:
-    app: {{ .Values.fruit }}
+    app: {{ .Release.Namespace }}
 spec:
   containers:
-    - name: {{ .Values.fruit }}-app
+    - name: {{ .Release.Namespace }}-app
       image: hashicorp/http-echo
       args:
         - "-text={{ .Values.text }}"
