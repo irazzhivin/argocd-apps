@@ -57,7 +57,7 @@ module "eks" {
   subnets         = module.vpc.private_subnets
 
   vpc_id = module.vpc.vpc_id
-
+  enable_irsa = true
   node_groups = {
     first = {
       desired_capacity = 2
@@ -120,6 +120,67 @@ resource "helm_release" "argocd" {
     file("argo-cd-config.yaml")
   ]
 }
+
+#Crossplane iam
+resource "aws_iam_policy" "crossplane" {
+  name_prefix = "crossplane"
+  policy      = data.aws_iam_policy_document.crossplane.json
+}
+
+data "aws_iam_policy_document" "crossplane" {
+  statement {
+    sid    = "Crossplane"
+    effect = "Allow"
+    actions = [
+      "s3:*"
+    ]
+    resources = [
+    "arn:aws:s3:::*"]
+  }
+  statement {
+    sid    = "RoleController"
+    effect = "Allow"
+    actions = [
+      "iam:GetRole",
+      "iam:AttachRolePolicy",
+      "iam:CreatePolicy",
+      "iam:CreatePolicyVersion",
+      "iam:CreateRole",
+      "iam:DeletePolicy",
+      "iam:DeletePolicyVersion",
+      "iam:DeleteRole",
+      "iam:DeleteRolePermissionsBoundary",
+      "iam:DeleteRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:GetPolicy",
+      "iam:GetPolicyVersion",
+      "iam:GetRolePolicy",
+      "iam:TagRole",
+      "iam:TagPolicy",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:ListAttachedRolePolicies",
+      "iam:ListPolicyVersions"
+    ]
+    resources = [
+    "*"]
+  }
+}
+
+locals {
+  all_eks_clusters_oidc_issuer_urls    = [trimprefix(module.eks.cluster_oidc_issuer_url, "https://")]
+}
+
+module "iam_assumable_role_crossplane" {
+
+  source                       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version                      = "4.7.0"
+  create_role                  = true
+  role_name                    = "crossplane"
+  provider_urls                = local.all_eks_clusters_oidc_issuer_urls
+  role_policy_arns             = [aws_iam_policy.crossplane.arn]
+  oidc_subjects_with_wildcards = ["system:serviceaccount:crossplane-system:provider-aws-*"]
+}
+
 
 
 #FIRST_RUN
