@@ -107,6 +107,20 @@ resource "helm_release" "nginx" {
   }
 }
 
+resource "helm_release" "argocd" {
+  name  = "argocd"
+
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  version          = "4.9.7"
+  create_namespace = true
+
+  values = [
+    file("argo-cd-config.yaml")
+  ]
+}
+
 
 #FIRST_RUN
 # aws eks --region eu-central-1 update-kubeconfig --name demo-eks-cluster
@@ -114,3 +128,6 @@ resource "helm_release" "nginx" {
 # kubectl apply -f apple.yaml
 # kubectl apply -f ingress-nginx.yaml
 # kubectl apply -f routes.yaml
+# curl https://a0468b226803f44b3914acc62dc1e319-d9f9fdd0b6aefaa3.elb.eu-central-1.amazonaws.com/banana
+# kubectl port-forward svc/argocd-server -n argocd 8080:443
+# kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
