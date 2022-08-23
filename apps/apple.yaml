@@ -3,26 +3,26 @@ kind: Application
 metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: crossplane-aws-provider
+  name: apple
   namespace: argocd
 spec:
   destination:
-    namespace: crossplane-system
+    namespace: fruit-apple
     server: https://kubernetes.default.svc
   project: default
   source:
     helm:
       parameters:
-      - name: namespace
-        value: crossplane-system
-      - name: AWSRoleArn
-        value: arn:aws:iam::478836649669:role/crossplane
+      - name: fruit
+        value: apple
       valueFiles:
       - values.yaml
-    path: charts/crossplane-aws-provider
+    path: charts/fruit-chart
     repoURL: https://github.com/irazzhivin/argocd-apps/
     targetRevision: main
   syncPolicy:
     automated:
       selfHeal: true
       prune: true
+    syncOptions:
+    - CreateNamespace=true

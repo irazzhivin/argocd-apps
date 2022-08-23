@@ -1,0 +1,10 @@
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.fruit }}-service
+spec:
+  selector:
+    app: {{ .Values.fruit }}
+  ports:
+    - port: 5678
