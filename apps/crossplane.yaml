@@ -12,6 +12,7 @@ spec:
   project: default
   source:
     helm:
+      values: "provider: \n packages: \n    - provider-aws\n "
       parameters:
       - name: provider.packages
         value: [provider-aws]
