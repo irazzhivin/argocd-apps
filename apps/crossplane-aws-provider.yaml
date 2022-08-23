@@ -16,7 +16,7 @@ spec:
       - name: namespace
         value: crossplane-system
       - name: AWSRoleArn
-        value: 'true'
+        value: arn:aws:iam::478836649669:role/crossplane
       valueFiles:
       - values.yaml
     path: charts/crossplane-aws-provider
@@ -26,5 +26,3 @@ spec:
     automated:
       selfHeal: true
       prune: true
-    syncOptions:
-    - CreateNamespace=true
