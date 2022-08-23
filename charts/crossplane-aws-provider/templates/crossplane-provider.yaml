@@ -25,7 +25,7 @@ kind: Provider
 metadata:
   name: provider-aws
 spec:
-  package: crossplane/provider-aws:alpha
+  package: crossplane/provider-aws:master
   controllerConfigRef:
     name: aws-config
 ---
