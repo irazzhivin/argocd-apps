@@ -14,7 +14,7 @@ spec:
     helm:
       parameters:
       - name: text
-        value: apple
+        value: banana
       valueFiles:
       - values.yaml
     path: charts/fruit-chart

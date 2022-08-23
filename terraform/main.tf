@@ -52,11 +52,11 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "16.2.0"
 
-  cluster_name    = "${local.cluster_name}"
+  cluster_name    = local.cluster_name
   cluster_version = "1.22"
   subnets         = module.vpc.private_subnets
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id      = module.vpc.vpc_id
   enable_irsa = true
   node_groups = {
     first = {
@@ -97,10 +97,10 @@ resource "kubernetes_namespace" "nginx" {
 
 
 resource "helm_release" "nginx" {
-  name        = "ingress-nginx"
-  repository  = "https://kubernetes.github.io/ingress-nginx"
-  chart       = "ingress-nginx"
-  namespace   = "ingress-nginx"
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "ingress-nginx"
   set {
     name  = "controller.service.type"
     value = "NodePort"
@@ -108,7 +108,7 @@ resource "helm_release" "nginx" {
 }
 
 resource "helm_release" "argocd" {
-  name  = "argocd"
+  name = "argocd"
 
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
@@ -167,7 +167,7 @@ data "aws_iam_policy_document" "crossplane" {
 }
 
 locals {
-  all_eks_clusters_oidc_issuer_urls    = [trimprefix(module.eks.cluster_oidc_issuer_url, "https://")]
+  all_eks_clusters_oidc_issuer_urls = [trimprefix(module.eks.cluster_oidc_issuer_url, "https://")]
 }
 
 module "iam_assumable_role_crossplane" {
@@ -192,5 +192,3 @@ module "iam_assumable_role_crossplane" {
 # curl https://a0468b226803f44b3914acc62dc1e319-d9f9fdd0b6aefaa3.elb.eu-central-1.amazonaws.com/banana
 # kubectl port-forward svc/argocd-server -n argocd 8080:443
 # kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-
-#kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username=idrazzhivin --docker-password=AAA777AAA --docker-email=idrazzhivin@icloud.com
