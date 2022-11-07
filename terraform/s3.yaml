@@ -1,0 +1,27 @@
+{{- if empty .Values.report.env.open.ALLURE_BLOBSTORAGE_S3_BUCKET -}}
+{{- $s3_hash := .Release.Namespace | b64enc | lower | trimAll "=" }}
+{{- $s3_name := print "allure-" $s3_hash }}
+apiVersion: s3.aws.crossplane.io/v1beta1
+kind: Bucket
+metadata:
+  name: {{ $s3_name }}
+spec:
+  deletionPolicy: Orphan
+  forProvider:
+    locationConstraint: eu-central-1
+    acl: private
+    versioningConfiguration:
+              status: Enabled
+    serverSideEncryptionConfiguration:
+      rules:
+        - applyServerSideEncryptionByDefault:
+            sseAlgorithm: AES256
+    tagging:
+              tagSet: 
+                - key: kubernetes_namespace
+                  value: {{ .Release.Namespace }}
+  providerConfigRef:
+    name: aws-provider
+  providerRef:
+    name: provider-aws
+{{- end -}}
