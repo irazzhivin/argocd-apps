@@ -1,6 +1,6 @@
-{{- if empty .Values.report.env.open.ALLURE_BLOBSTORAGE_S3_BUCKET -}}
+{{- if empty .Values.env.open.BLOBSTORAGE_S3_BUCKET -}}
 {{- $s3_hash := .Release.Namespace | b64enc | lower | trimAll "=" }}
-{{- $s3_name := print "allure-" $s3_hash }}
+{{- $s3_name := print "production-" $s3_hash }}
 apiVersion: s3.aws.crossplane.io/v1beta1
 kind: Bucket
 metadata:
